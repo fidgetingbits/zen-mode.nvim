@@ -184,8 +184,11 @@ function M.create(opts)
   }, M.layout(opts))
 
   local buf = vim.api.nvim_get_current_buf()
+  local is_terminal_mode = vim.api.nvim_get_mode().mode == "t"
   M.win = vim.api.nvim_open_win(buf, true, win_opts)
-  vim.cmd([[norm! zz]])
+  if not is_terminal_mode then
+    vim.cmd([[norm! zz]])
+  end
   M.fix_hl(M.win)
 
   for k, v in pairs(opts.window.options or {}) do
